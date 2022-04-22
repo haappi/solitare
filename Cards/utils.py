@@ -1,3 +1,4 @@
+import typing
 from typing import Union
 
 from PIL import Image
@@ -6,11 +7,11 @@ from PIL import Image
 class Card:
     # instance = None
     def __init__(self, suite: str, number: int, color: str):
-        self.__suite = suite.title()  # ace / spade / heart / diamond
-        self.__number = number  # 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 / jack / queen / king
-        self.__color = color.title()  # red / black,
-        self.__name = f"{self.__number} of {self.__suite}"
-        self.__asset_location = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
+        self.__suite: str = suite.title()  # ace / spade / heart / diamond
+        self.__number: int = number  # 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 / jack / queen / king
+        self.__color: str = color.title()  # red / black,
+        self.__name: typing.Final[str] = f"{self.__number} of {self.__suite}"
+        self.__asset_location: typing.Final[str] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
 
     def get_suite(self) -> str:
         return self.__suite
@@ -23,3 +24,6 @@ class Card:
 
     def get_name(self) -> str:
         return self.__name
+
+    def yes(self):
+        return Image.open(self.__asset_location).show()
