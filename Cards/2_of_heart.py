@@ -1,6 +1,10 @@
-import utild
+from Cards.utils import Card
 
 
-class Two_of_hearts(utild.Card):
+class TwoOfHearts(Card):
     def __init__(self):
-        super().__init__(2, 'Hearts', 1)
+        super().__init__(suite='hearts', number=2, color='red')
+        print(self.get_name())
+
+
+TwoOfHearts()
