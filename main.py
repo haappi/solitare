@@ -20,3 +20,8 @@ x = cards that are face down
 
 # 500 x 726
 import random
+
+
+def init():
+    global card_list
+    card_list = []
