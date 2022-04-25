@@ -8,6 +8,18 @@ name_mappings: typing.Final = {
     "clubs": "club"
 }
 
+number_mappings: typing.Final = {
+    1: "1",
+    2: "2",
+    3: "3",
+    4: "4",
+    5: "5",
+    6: "6",
+    7: "7",
+    8: "8",
+    9: "9",
+}
+
 color_mappings: typing.Final = {
     "heart": "red",
     "club": "black",
@@ -31,4 +43,3 @@ def get_types(filename: str) -> dict:
         "suite": name_mappings[__parts[2]],
         "color": color_mappings[name_mappings[__parts[2]]]
     }
-
