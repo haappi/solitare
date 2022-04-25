@@ -39,7 +39,7 @@ def get_types(filename: str) -> dict:
     __filename: str = os.path.basename(filename).split(".")[0]
     __parts: typing.List[str] = __filename.split("_")
     return {
-        "number": __parts[0],
+        "number": number_mappings[int(__parts[0])],
         "suite": name_mappings[__parts[2]],
         "color": color_mappings[name_mappings[__parts[2]]]
     }
