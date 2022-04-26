@@ -20,10 +20,20 @@ number_mappings: typing.Final = {
 
 
 def get_if_file_exists(file_name) -> bool:
+    """
+    See if a card class exists. Returns true if it does, else false.
+    :param file_name: A file name to check against
+    :return: A boolean returning the condition
+    """
     return os.path.isfile("./Cards/CardObjects/" + file_name + ".py")
 
 
 def get_class_name_formatting(file_name) -> str:
+    """
+    Get the camel case formatting of haappi :tm:
+    :param file_name: A file name to run against.
+    :return: A string containing the proper formatting.
+    """
     new_name = ""
     holder = file_name.removesuffix(".py").split("_")
     for i in holder:
@@ -31,17 +41,34 @@ def get_class_name_formatting(file_name) -> str:
     return new_name
 
 
-def delete_file(file_name):
+def delete_file(file_name) -> None:
+    """
+    Deletes a file.
+    :param file_name: A file name to run against.
+    :return: None.
+    """
     os.remove(f"./Cards/CardObjects/{file_name}")
 
 
-def delete_directory_recursively():
+def delete_directory_recursively() -> None:
+    """
+    Deletes all but the init files in the card directory recursively.
+    :return: None.
+    """
     for _file in os.listdir("./Cards/CardObjects"):
-        if _file == "__init__.py":
+        if _file in ("__init__.py", "__pycache__"):
             continue
         delete_file(_file)
+        print(f"Deleted {_file}")
 
-def create_file(file_name):
+
+def create_file(file_name) -> None:
+    """
+    Creates a file under the file name and the proper code formatting.
+    This is used to create the card class, and apply changes quickly when needed.
+    :param file_name: A file name to run against.
+    :return: None.
+    """
     class_name = get_class_name_formatting(file_name)
     _file = open("./Cards/CardObjects/" + file_name, "w")
     content = (
@@ -62,6 +89,12 @@ def create_file(file_name):
 
 
 def get_file_formatting(asset_name: str) -> typing.Union[str, None]:
+    """
+    Gets the name, suite, and color based off the file name.
+    Returns either the proper formatting, or None if it's invalid
+    :param asset_name: A string containing the name of the asset.
+    :return: A string with the proper python file formatting
+    """
     name = asset_name.removesuffix(".png").split("_")
     if len(name) != 3:
         return None
@@ -69,8 +102,13 @@ def get_file_formatting(asset_name: str) -> typing.Union[str, None]:
 
 
 def main():
+    """
+    Deletes the directory of files and creates new fresh copies with the formatting from above.
+    :return:
+    """
     class_names = []
     file_names = []
+    delete_directory_recursively()
     for _file in os.listdir("./assets/cards"):
         if os.path.isfile(os.path.join("./assets/cards", _file)):
             if _file.endswith(".png"):
@@ -94,6 +132,8 @@ def main():
     print("(" + ", ".join([s for s in class_names]) + ")")
     print("\nUse the following import statement to make your hellish life easier.\n\n")
     print("\n".join([s for s in file_names]))
+    # todo dynamically update the __init__ file with the correct imports + tuple.
+    # make sure to see where the imports end and begin, along with the tuple
 
 
 main()
