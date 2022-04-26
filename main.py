@@ -30,4 +30,3 @@ def init():
     global card_list
     card_list = CardObjects.init_cards()
 
-
