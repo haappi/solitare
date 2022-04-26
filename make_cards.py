@@ -23,11 +23,16 @@ def get_if_file_exists(file_name) -> bool:
     return os.path.isfile("./Cards/CardObjects/" + file_name + ".py")
 
 
-def create_file(file_name, class_name: str = ""):
-    if class_name == "":
-        holder = file_name.removesuffix(".py").split("_")
-        for i in holder:
-            class_name += i.capitalize()
+def get_class_name_formatting(file_name) -> str:
+    new_name = ""
+    holder = file_name.removesuffix(".py").split("_")
+    for i in holder:
+        new_name += i.capitalize()
+    return new_name
+
+
+def create_file(file_name):
+    class_name = get_class_name_formatting(file_name)
     _file = open("./Cards/CardObjects/" + file_name + ".py", "w")
     content = f"from Cards import CardObjects\n" \
               f"from utils import Card\n" \
