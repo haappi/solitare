@@ -33,7 +33,7 @@ def get_class_name_formatting(file_name) -> str:
 
 def create_file(file_name):
     class_name = get_class_name_formatting(file_name)
-    _file = open("./Cards/CardObjects/" + file_name + ".py", "w")
+    _file = open("./Cards/CardObjects/" + file_name, "w")
     content = f"from Cards import CardObjects\n" \
               f"from utils import Card\n" \
               f"\n" \
@@ -56,6 +56,8 @@ def get_file_formatting(asset_name: str) -> typing.Union[str, None]:
 
 
 def main():
+    class_names = []
+    file_names = []
     for _file in os.listdir("./assets/cards"):
         if os.path.isfile(os.path.join("./assets/cards", _file)):
             if _file.endswith(".png"):
@@ -63,11 +65,18 @@ def main():
                 if formatting is None:
                     print(f"{_file} is not formatted correctly")
                     continue
+                class_names.append(get_class_name_formatting(formatting))  # I want the format to be accurate, but
+                # still work if file does exist.
+                file_names.append(f"from Cards.CardObjects.{formatting.removesuffix('.py')} import {get_class_name_formatting(formatting)}")
                 if get_if_file_exists(formatting):
                     print(f"{formatting} already exists")
                     continue
                 create_file(formatting)
                 print(f"Created {formatting}")
+    print(f"Paste the following code segment where tuples are used and import.")
+    print("(" + ", ".join([s for s in class_names]) + ")")
+    print("\nUse the following import statement to make your hellish life easier.\n\n")
+    print("\n".join([s for s in file_names]))
 
 
 main()
