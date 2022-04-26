@@ -38,6 +38,7 @@ def create_file(file_name):
         f"from Cards import CardObjects\n"
         f"from utils import Card\n"
         f"\n"
+        f"\n"
         f"class {class_name}(Card):\n"
         f"    def __init__(self):\n"
         f"        super().__init__(**CardObjects.get_types(__file__))\n"
