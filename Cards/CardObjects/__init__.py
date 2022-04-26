@@ -42,19 +42,15 @@ from Cards.CardObjects.ace_of_clubs import AceOfClubs
 from Cards.CardObjects.ace_of_diamonds import AceOfDiamonds
 from Cards.CardObjects.ace_of_hearts import AceOfHearts
 from Cards.CardObjects.ace_of_spades import AceOfSpades
-from Cards.CardObjects.ace_of_spades2 import AceOfSpades2
 from Cards.CardObjects.jack_of_clubs import JackOfClubs
-from Cards.CardObjects.jack_of_clubs2 import JackOfClubs2
 from Cards.CardObjects.jack_of_diamonds import JackOfDiamonds
-from Cards.CardObjects.jack_of_diamonds2 import JackOfDiamonds2
 from Cards.CardObjects.jack_of_hearts import JackOfHearts
-from Cards.CardObjects.jack_of_hearts2 import JackOfHearts2
 from Cards.CardObjects.jack_of_spades import JackOfSpades
 from Cards.CardObjects.king_of_clubs import KingOfClubs
-from Cards.CardObjects.king_of_clubs2 import KingOfClubs2
 from Cards.CardObjects.king_of_diamonds import KingOfDiamonds
 from Cards.CardObjects.king_of_hearts import KingOfHearts
 from Cards.CardObjects.king_of_spades import KingOfSpades
+from Cards.CardObjects.queen_of_clubs import QueenOfClubs
 from Cards.CardObjects.queen_of_diamonds import QueenOfDiamonds
 from Cards.CardObjects.queen_of_hearts import QueenOfHearts
 from Cards.CardObjects.queen_of_spades import QueenOfSpades
@@ -76,7 +72,10 @@ number_mappings: typing.Final = {
     "seven": 7,
     "eight": 8,
     "nine": 9,
-    "ten": 10
+    "ten": 10,
+    "jack": "jack",
+    "queen": "queen",
+    "king": "king"
 }
 
 color_mappings: typing.Final = {
@@ -105,15 +104,8 @@ def get_types(filename: str) -> dict:
     }
 
 
-yes = (TenOfClubs, TenOfDiamonds, TenOfHearts, TenOfSpades, TwoOfClubs, TwoOfDiamonds, TwoOfHearts, TwoOfSpades,
-       ThreeOfClubs, ThreeOfDiamonds, ThreeOfHearts, ThreeOfSpades, FourOfClubs, FourOfDiamonds, FourOfHearts,
-       FourOfSpades, FiveOfClubs, FiveOfDiamonds, FiveOfHearts, FiveOfSpades, SixOfClubs, SixOfDiamonds,
-       SixOfHearts, SixOfSpades, SevenOfClubs, SevenOfDiamonds, SevenOfHearts, SevenOfSpades, EightOfClubs,
-       EightOfDiamonds, EightOfHearts, EightOfSpades, NineOfClubs, NineOfDiamonds, NineOfHearts, NineOfSpades,
-       AceOfClubs, AceOfDiamonds, AceOfHearts, AceOfSpades, AceOfSpades2, JackOfClubs, JackOfClubs2, JackOfDiamonds,
-       JackOfDiamonds2, JackOfHearts, JackOfHearts2, JackOfSpades, KingOfClubs, KingOfClubs2, KingOfDiamonds,
-       KingOfHearts, KingOfSpades, QueenOfDiamonds, QueenOfHearts, QueenOfSpades)
+yes = (TenOfClubs, TenOfDiamonds, TenOfHearts, TenOfSpades, TwoOfClubs, TwoOfDiamonds, TwoOfHearts, TwoOfSpades, ThreeOfClubs, ThreeOfDiamonds, ThreeOfHearts, ThreeOfSpades, FourOfClubs, FourOfDiamonds, FourOfHearts, FourOfSpades, FiveOfClubs, FiveOfDiamonds, FiveOfHearts, FiveOfSpades, SixOfClubs, SixOfDiamonds, SixOfHearts, SixOfSpades, SevenOfClubs, SevenOfDiamonds, SevenOfHearts, SevenOfSpades, EightOfClubs, EightOfDiamonds, EightOfHearts, EightOfSpades, NineOfClubs, NineOfDiamonds, NineOfHearts, NineOfSpades, AceOfClubs, AceOfDiamonds, AceOfHearts, AceOfSpades, JackOfClubs, JackOfDiamonds, JackOfHearts, JackOfSpades, KingOfClubs, KingOfDiamonds, KingOfHearts, KingOfSpades, QueenOfClubs, QueenOfDiamonds, QueenOfHearts, QueenOfSpades)
 
 for card in yes:
     main.card_list.append(card())
-print(main.card_list)
+print(main.card_list)  # todo this prints twice. the first list looks inaccurate?
