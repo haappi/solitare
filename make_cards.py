@@ -121,7 +121,8 @@ def main():
                 )  # I want the format to be accurate, but
                 # still work if file does exist.
                 file_names.append(
-                    f"from Cards.CardObjects.{formatting.removesuffix('.py')} import {get_class_name_formatting(formatting)}"
+                    f"from Cards.CardObjects.{formatting.removesuffix('.py')} import "
+                    f"{get_class_name_formatting(formatting)}"
                 )
                 if get_if_file_exists(formatting):
                     print(f"{formatting} already exists")

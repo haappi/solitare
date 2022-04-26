@@ -21,8 +21,13 @@ x = cards that are face down
 # 500 x 726
 import random
 
+import Cards.CardObjects as CardObjects
+
 card_list = []
 
 
 def init():
     global card_list
+    card_list = CardObjects.init_cards()
+
+

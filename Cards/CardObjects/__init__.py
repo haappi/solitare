@@ -1,6 +1,5 @@
 import os
 import typing
-import main
 
 from Cards.CardObjects.ten_of_clubs import TenOfClubs
 from Cards.CardObjects.ten_of_diamonds import TenOfDiamonds
@@ -54,6 +53,7 @@ from Cards.CardObjects.queen_of_clubs import QueenOfClubs
 from Cards.CardObjects.queen_of_diamonds import QueenOfDiamonds
 from Cards.CardObjects.queen_of_hearts import QueenOfHearts
 from Cards.CardObjects.queen_of_spades import QueenOfSpades
+from utils import Card
 
 name_mappings: typing.Final = {
     "hearts": "heart",
@@ -63,7 +63,7 @@ name_mappings: typing.Final = {
 }
 
 number_mappings: typing.Final = {
-    "ace": 1,
+    "ace": "ace",
     "two": 2,
     "three": 3,
     "four": 4,
@@ -159,6 +159,12 @@ yes = (
     QueenOfSpades,
 )
 
-for card in yes:
-    main.card_list.append(card())
-print(main.card_list)  # todo this prints twice. the first list looks inaccurate?
+
+def init_cards() -> typing.List[Card]:
+    current_directory = os.getcwd()
+    os.chdir("..")
+    cards = []
+    for card in yes:
+        cards.append(card())
+    os.chdir(current_directory)
+    return cards
