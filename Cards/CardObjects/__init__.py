@@ -59,7 +59,7 @@ name_mappings: typing.Final = {
     "hearts": "heart",
     "diamonds": "diamond",
     "spades": "spade",
-    "clubs": "club"
+    "clubs": "club",
 }
 
 number_mappings: typing.Final = {
@@ -75,14 +75,14 @@ number_mappings: typing.Final = {
     "ten": 10,
     "jack": "jack",
     "queen": "queen",
-    "king": "king"
+    "king": "king",
 }
 
 color_mappings: typing.Final = {
     "heart": "red",
     "club": "black",
     "diamond": "red",
-    "spade": "black"
+    "spade": "black",
 }
 
 
@@ -100,11 +100,64 @@ def get_types(filename: str) -> dict:
     return {
         "number": number_mappings[__parts[0]],
         "suite": name_mappings[__parts[2]],
-        "color": color_mappings[name_mappings[__parts[2]]]
+        "color": color_mappings[name_mappings[__parts[2]]],
     }
 
 
-yes = (TenOfClubs, TenOfDiamonds, TenOfHearts, TenOfSpades, TwoOfClubs, TwoOfDiamonds, TwoOfHearts, TwoOfSpades, ThreeOfClubs, ThreeOfDiamonds, ThreeOfHearts, ThreeOfSpades, FourOfClubs, FourOfDiamonds, FourOfHearts, FourOfSpades, FiveOfClubs, FiveOfDiamonds, FiveOfHearts, FiveOfSpades, SixOfClubs, SixOfDiamonds, SixOfHearts, SixOfSpades, SevenOfClubs, SevenOfDiamonds, SevenOfHearts, SevenOfSpades, EightOfClubs, EightOfDiamonds, EightOfHearts, EightOfSpades, NineOfClubs, NineOfDiamonds, NineOfHearts, NineOfSpades, AceOfClubs, AceOfDiamonds, AceOfHearts, AceOfSpades, JackOfClubs, JackOfDiamonds, JackOfHearts, JackOfSpades, KingOfClubs, KingOfDiamonds, KingOfHearts, KingOfSpades, QueenOfClubs, QueenOfDiamonds, QueenOfHearts, QueenOfSpades)
+yes = (
+    TenOfClubs,
+    TenOfDiamonds,
+    TenOfHearts,
+    TenOfSpades,
+    TwoOfClubs,
+    TwoOfDiamonds,
+    TwoOfHearts,
+    TwoOfSpades,
+    ThreeOfClubs,
+    ThreeOfDiamonds,
+    ThreeOfHearts,
+    ThreeOfSpades,
+    FourOfClubs,
+    FourOfDiamonds,
+    FourOfHearts,
+    FourOfSpades,
+    FiveOfClubs,
+    FiveOfDiamonds,
+    FiveOfHearts,
+    FiveOfSpades,
+    SixOfClubs,
+    SixOfDiamonds,
+    SixOfHearts,
+    SixOfSpades,
+    SevenOfClubs,
+    SevenOfDiamonds,
+    SevenOfHearts,
+    SevenOfSpades,
+    EightOfClubs,
+    EightOfDiamonds,
+    EightOfHearts,
+    EightOfSpades,
+    NineOfClubs,
+    NineOfDiamonds,
+    NineOfHearts,
+    NineOfSpades,
+    AceOfClubs,
+    AceOfDiamonds,
+    AceOfHearts,
+    AceOfSpades,
+    JackOfClubs,
+    JackOfDiamonds,
+    JackOfHearts,
+    JackOfSpades,
+    KingOfClubs,
+    KingOfDiamonds,
+    KingOfHearts,
+    KingOfSpades,
+    QueenOfClubs,
+    QueenOfDiamonds,
+    QueenOfHearts,
+    QueenOfSpades,
+)
 
 for card in yes:
     main.card_list.append(card())

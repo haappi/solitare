@@ -23,5 +23,6 @@ import random
 
 card_list = []
 
+
 def init():
     global card_list

@@ -1,6 +1,7 @@
 from Cards import CardObjects
 from utils import Card
 
+
 class ThreeOfDiamonds(Card):
     def __init__(self):
         super().__init__(**CardObjects.get_types(__file__))

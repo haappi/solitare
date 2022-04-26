@@ -34,15 +34,17 @@ def get_class_name_formatting(file_name) -> str:
 def create_file(file_name):
     class_name = get_class_name_formatting(file_name)
     _file = open("./Cards/CardObjects/" + file_name, "w")
-    content = f"from Cards import CardObjects\n" \
-              f"from utils import Card\n" \
-              f"\n" \
-              f"class {class_name}(Card):\n" \
-              f"    def __init__(self):\n" \
-              f"        super().__init__(**CardObjects.get_types(__file__))\n" \
-              f"\n" \
-              f"    def __new__(cls, *args, **kwargs):\n" \
-              f"        return super().__new__(cls, *args, **kwargs)\n"
+    content = (
+        f"from Cards import CardObjects\n"
+        f"from utils import Card\n"
+        f"\n"
+        f"class {class_name}(Card):\n"
+        f"    def __init__(self):\n"
+        f"        super().__init__(**CardObjects.get_types(__file__))\n"
+        f"\n"
+        f"    def __new__(cls, *args, **kwargs):\n"
+        f"        return super().__new__(cls, *args, **kwargs)\n"
+    )
     _file.write(content)
     _file.close()
     return None
@@ -65,9 +67,13 @@ def main():
                 if formatting is None:
                     print(f"{_file} is not formatted correctly")
                     continue
-                class_names.append(get_class_name_formatting(formatting))  # I want the format to be accurate, but
+                class_names.append(
+                    get_class_name_formatting(formatting)
+                )  # I want the format to be accurate, but
                 # still work if file does exist.
-                file_names.append(f"from Cards.CardObjects.{formatting.removesuffix('.py')} import {get_class_name_formatting(formatting)}")
+                file_names.append(
+                    f"from Cards.CardObjects.{formatting.removesuffix('.py')} import {get_class_name_formatting(formatting)}"
+                )
                 if get_if_file_exists(formatting):
                     print(f"{formatting} already exists")
                     continue
