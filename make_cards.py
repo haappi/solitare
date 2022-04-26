@@ -31,6 +31,16 @@ def get_class_name_formatting(file_name) -> str:
     return new_name
 
 
+def delete_file(file_name):
+    os.remove(f"./Cards/CardObjects/{file_name}")
+
+
+def delete_directory_recursively():
+    for _file in os.listdir("./Cards/CardObjects"):
+        if _file == "__init__.py":
+            continue
+        delete_file(_file)
+
 def create_file(file_name):
     class_name = get_class_name_formatting(file_name)
     _file = open("./Cards/CardObjects/" + file_name, "w")
