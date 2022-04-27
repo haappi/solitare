@@ -18,6 +18,17 @@ number_mappings: typing.Final = {
     "king": "king",
 }
 
+base_content = f"from Cards import CardObjects\n" \
+    f"from utils import Card\n" \
+    f"\n" \
+    f"\n" \
+    f"class ඞ(Card):\n" """yes. the among us emoji.""" \
+    f"    def __init__(self):\n" \
+    f"        super().__init__(**CardObjects.get_types(__file__))\n" \
+    f"\n" \
+    f"    def __new__(cls, *args, **kwargs):\n" \
+    f"        return super().__new__(cls, *args, **kwargs)\n"
+
 
 def get_if_file_exists(file_name) -> bool:
     """
@@ -71,19 +82,7 @@ def create_file(file_name) -> None:
     """
     class_name = get_class_name_formatting(file_name)
     _file = open("./Cards/CardObjects/" + file_name, "w")
-    content = (
-        f"from Cards import CardObjects\n"
-        f"from utils import Card\n"
-        f"\n"
-        f"\n"
-        f"class {class_name}(Card):\n"
-        f"    def __init__(self):\n"
-        f"        super().__init__(**CardObjects.get_types(__file__))\n"
-        f"\n"
-        f"    def __new__(cls, *args, **kwargs):\n"
-        f"        return super().__new__(cls, *args, **kwargs)\n"
-    )
-    _file.write(content)
+    _file.write(base_content.replace("ඞ", class_name))
     _file.close()
     return None
 
