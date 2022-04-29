@@ -161,6 +161,10 @@ yes = (
 
 
 def init_cards() -> typing.List[Card]:
+    """
+    Returns a list of all the cards in the game
+    :return:
+    """
     current_directory = os.getcwd()
     os.chdir("..")
     cards = []

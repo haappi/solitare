@@ -84,7 +84,6 @@ def create_file(file_name) -> None:
     _file = open("./Cards/CardObjects/" + file_name, "w")
     _file.write(base_content.replace("ඞ", class_name))
     _file.close()
-    return None
 
 
 def get_file_formatting(asset_name: str) -> typing.Union[str, None]:
