@@ -20,19 +20,43 @@ class Card:
         ] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
 
     def get_suite(self) -> str:
+        """
+        Returns the suite of the card
+        :return: [:class:`str`]
+        """
         return self.__suite
 
     def get_number(self) -> int:
+        """
+        Returns the number of the card
+        :return: [:class:`int`]
+        """
         return self.__number
 
     def get_color(self) -> str:
+        """
+        Returns the color of the card
+        :return: [:class:`str`]
+        """
         return self.__color
 
     def get_name(self) -> str:
+        """
+        Returns the name of the card
+        :return: [:class:`str`]
+        """
         return self.__name
 
-    def yes(self):
-        return Image.open(self.__asset_location).show()
+    def get_asset_location(self) -> str:
+        """
+        Returns the path of the card's asset
+        :return: [:class:`str`]
+        """
+        return self.__asset_location
 
     def __repr__(self) -> str:
+        """
+        Represents the card as its name
+        :return:
+        """
         return f"<{self.__name}>"
