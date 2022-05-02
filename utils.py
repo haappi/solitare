@@ -3,10 +3,11 @@ import random
 import typing
 from typing import Union
 
+import arcade
 from PIL import Image
 
 
-class Card:
+class Card(arcade.Sprite):
     # instance = None
     def __init__(self, suite: str, number: typing.Union[str, int], color: str):
         self.__suite: str = suite.title()  # ace / spade / heart / diamond
@@ -18,6 +19,8 @@ class Card:
         self.__asset_location: typing.Final[
             str
         ] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
+        super().__init__(self.__asset_location, scale=0.5, hit_box_algorithm="None")
+
 
     def get_suite(self) -> str:
         """
