@@ -19,7 +19,6 @@ x = cards that are face down
 """
 
 # 500 x 726
-import random
 
 import Cards.CardObjects as CardObjects
 

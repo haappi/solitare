@@ -1,7 +1,8 @@
 import typing
-from utils import Card
+
 import arcade
 
+from utils import Card
 
 
 class CardSprite(arcade.Sprite):

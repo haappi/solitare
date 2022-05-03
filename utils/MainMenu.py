@@ -11,5 +11,5 @@ class Instruction(arcade.View):
         self.clear()
         arcade.draw_text("Instructions Screen", self.window.width / 2, self.window.height / 2,
                          arcade.color.WHITE, font_size=50, anchor_x="center")
-        arcade.draw_text("Click to advance", self.window.width / 2, self.window.height / 2-75,
+        arcade.draw_text("Click to advance", self.window.width / 2, self.window.height / 2 - 75,
                          arcade.color.WHITE, font_size=20, anchor_x="center")

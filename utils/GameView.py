@@ -1,5 +1,6 @@
-import arcade
 import typing
+
+import arcade
 
 _SCREEN_WIDTH: typing.Final[int] = 1024
 _SCREEN_HEIGHT: typing.Final[int] = 768
