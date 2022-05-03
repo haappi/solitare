@@ -2,9 +2,12 @@ import typing
 
 import arcade
 
+from utils import Card
+
 _SCREEN_WIDTH: typing.Final[int] = 1024
 _SCREEN_HEIGHT: typing.Final[int] = 768
-
+_CARD_SUITES = ["Spades", "Hearts", "Diamonds", "Clubs"]
+_CARD_VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 
 class Solitaire(arcade.Window):
     def __init__(self):
@@ -21,7 +24,9 @@ class Solitaire(arcade.Window):
         :return :class:`None`
         """
         self.card_list = arcade.SpriteList()
-
+        for suit in _CARD_SUITES:
+            for value in _CARD_VALUES:
+                card = Card(suite=suit, number=value)
 
     def on_draw(self):
         self.clear()
