@@ -9,6 +9,7 @@ _SCREEN_HEIGHT: typing.Final[int] = 768
 _CARD_SUITES = ["Spades", "Hearts", "Diamonds", "Clubs"]
 _CARD_VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 
+
 class Solitaire(arcade.Window):
     def __init__(self):
         super().__init__(_SCREEN_WIDTH, _SCREEN_HEIGHT, "Solitaire")

@@ -15,6 +15,7 @@ class Card(arcade.Sprite):
             str
         ] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
         super().__init__(self.__asset_location, scale=0.5, hit_box_algorithm="None")
+        self.__is_face_up = False
 
     def get_suite(self) -> str:
         """
@@ -57,3 +58,18 @@ class Card(arcade.Sprite):
         :return:
         """
         return f"<{self.__name}>"
+
+    def face_down(self):
+        """ Turn card face-down """
+        self.texture = arcade.load_texture("../assets/cards/back.png")
+        self.__is_face_up = False
+
+    def face_up(self):
+        """ Turn card face-up """
+        self.texture = arcade.load_texture(self.__asset_location)
+        self.__is_face_up = True
+
+    @property
+    def is_face_down(self):
+        """ Is this card face down? """
+        return not self.__is_face_up
