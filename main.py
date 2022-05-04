@@ -1,5 +1,7 @@
 """
 https://www.wikihow.com/Play-Solitaire
+https://www.wikihow.com/Win-at-Solitaire
+- 4 long piles.
 
 p    y x x x x x x  [hearts]
 a      y x x x x x  [diamonds]
@@ -48,3 +50,5 @@ def init():
 
 
 init()
+
+# https://reloadium.io/

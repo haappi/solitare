@@ -7,8 +7,8 @@ import random
 import arcade
 
 # Screen title and size
-SCREEN_WIDTH = 1024
-SCREEN_HEIGHT = 768
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 1080
 SCREEN_TITLE = "Drag and Drop Cards"
 
 # Constants for sizing
@@ -71,39 +71,28 @@ TOP_PILE_4 = 12
 
 
 class Card(arcade.Sprite):
-    """ Card sprite """
-
     def __init__(self, suit, value, scale=1):
-        """ Card constructor """
-
-        # Attributes for suit and value
         self.suit = suit
         self.value = value
 
-        # Image to use for the sprite when face up
         self.image_file_name = f":resources:images/cards/card{self.suit}{self.value}.png"
         self.is_face_up = False
         super().__init__(FACE_DOWN_IMAGE, scale, hit_box_algorithm="None")
 
     def face_down(self):
-        """ Turn card face-down """
         self.texture = arcade.load_texture(FACE_DOWN_IMAGE)
         self.is_face_up = False
 
     def face_up(self):
-        """ Turn card face-up """
         self.texture = arcade.load_texture(self.image_file_name)
         self.is_face_up = True
 
     @property
     def is_face_down(self):
-        """ Is this card face down? """
         return not self.is_face_up
 
 
 class MyGame(arcade.Window):
-    """ Main application class. """
-
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
@@ -120,12 +109,9 @@ class MyGame(arcade.Window):
         self.piles = None
 
     def setup(self):
-        """ Set up the game here. Call this function to restart the game. """
-
         self.held_cards = []
 
         self.held_cards_original_position = []
-
 
         self.pile_mat_list: arcade.SpriteList = arcade.SpriteList()
 
@@ -146,7 +132,6 @@ class MyGame(arcade.Window):
             pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.DARK_OLIVE_GREEN)
             pile.position = START_X + i * X_SPACING, TOP_Y
             self.pile_mat_list.append(pile)
-
 
         self.card_list = arcade.SpriteList()
 
@@ -176,7 +161,6 @@ class MyGame(arcade.Window):
             self.piles[i][-1].face_up()
 
     def on_draw(self):
-        """ Render the screen. """
         self.clear()
 
         self.pile_mat_list.draw()
@@ -184,18 +168,15 @@ class MyGame(arcade.Window):
         self.card_list.draw()
 
     def pull_to_top(self, card: arcade.Sprite):
-        """ Pull card to top of rendering order (last to render, looks on-top) """
 
         self.card_list.remove(card)
         self.card_list.append(card)
 
     def on_key_press(self, symbol: int, modifiers: int):
-        """ User presses key """
         if symbol == arcade.key.R:
             self.setup()
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-        """ Called when the user presses a mouse button. """
 
         cards = arcade.get_sprites_at_point((x, y), self.card_list)
 
@@ -248,26 +229,22 @@ class MyGame(arcade.Window):
                         card.position = self.pile_mat_list[BOTTOM_FACE_DOWN_PILE].position
 
     def remove_card_from_pile(self, card):
-        """ Remove card from whatever pile it was in. """
         for pile in self.piles:
             if card in pile:
                 pile.remove(card)
                 break
 
     def get_pile_for_card(self, card):
-        """ What pile is this card in? """
         for index, pile in enumerate(self.piles):
             if card in pile:
                 return index
 
     def move_card_to_new_pile(self, card, pile_index):
-        """ Move the card to a new pile """
         self.remove_card_from_pile(card)
         self.piles[pile_index].append(card)
 
     def on_mouse_release(self, x: float, y: float, button: int,
                          modifiers: int):
-        """ Called when the user presses a mouse button. """
 
         if len(self.held_cards) == 0:
             return
