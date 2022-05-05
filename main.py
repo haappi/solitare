@@ -38,7 +38,7 @@ x = cards that are face down
 
 # 500 x 726
 
-import Cards.CardObjects as CardObjects
+from archived import Cards as CardObjects
 
 card_list = []
 
