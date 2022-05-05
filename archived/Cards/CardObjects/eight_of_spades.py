@@ -1,5 +1,5 @@
 from archived.Cards import CardObjects
-from utils import Card
+from CardClass import Card
 
 
 class EightOfSpades(Card):

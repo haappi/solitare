@@ -2,7 +2,7 @@ import typing
 
 import arcade
 
-from utils import Card
+from CardClass import Card
 
 _SCREEN_WIDTH: typing.Final[int] = 1024
 _SCREEN_HEIGHT: typing.Final[int] = 768

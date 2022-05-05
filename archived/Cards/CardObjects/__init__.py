@@ -53,7 +53,7 @@ from archived.Cards.CardObjects.two_of_clubs import TwoOfClubs
 from archived.Cards.CardObjects.two_of_diamonds import TwoOfDiamonds
 from archived.Cards.CardObjects.two_of_hearts import TwoOfHearts
 from archived.Cards.CardObjects.two_of_spades import TwoOfSpades
-from utils import Card
+from CardClass import Card
 
 name_mappings: typing.Final = {
     "hearts": "heart",
