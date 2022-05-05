@@ -4,8 +4,8 @@ import arcade
 
 from CardClass import Card
 
-_SCREEN_WIDTH: typing.Final[int] = 1024
-_SCREEN_HEIGHT: typing.Final[int] = 768
+_SCREEN_WIDTH: typing.Final[int] = 1200
+_SCREEN_HEIGHT: typing.Final[int] = 800
 _CARD_SUITES = ["Spades", "Hearts", "Diamonds", "Clubs"]
 _CARD_VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 

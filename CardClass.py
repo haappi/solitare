@@ -4,12 +4,11 @@ import arcade
 
 
 class Card(arcade.Sprite):
-    def __init__(self, suite: str, number: typing.Union[str, int], color: str):
+    def __init__(self, suite: str, number: typing.Union[str, int]):
         self.__suite: str = suite.title()  # ace / spade / heart / diamond
         self.__number: typing.Union[
             str, int
         ] = number  # 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 / jack / queen / king
-        self.__color: str = color.title()  # red / black,
         self.__name: typing.Final[str] = f"{self.__number} of {self.__suite}"
         self.__asset_location: typing.Final[
             str
@@ -30,13 +29,6 @@ class Card(arcade.Sprite):
         :return: [:class:`int`]
         """
         return self.__number
-
-    def get_color(self) -> str:
-        """
-        Returns the color of the card
-        :return: [:class:`str`]
-        """
-        return self.__color
 
     def get_name(self) -> str:
         """
