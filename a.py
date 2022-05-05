@@ -48,7 +48,7 @@ CARD_VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
 CARD_SUITS = ["Clubs", "Hearts", "Spades", "Diamonds"]
 
 # If we fan out cards stacked on each other, how far apart to fan them?
-CARD_VERTICAL_OFFSET = CARD_HEIGHT * CARD_SCALE * 0.3
+CARD_VERTICAL_OFFSET = CARD_HEIGHT * CARD_SCALE * 0.5
 
 # Face down image
 FACE_DOWN_IMAGE = ":resources:images/cards/cardBack_red2.png"
