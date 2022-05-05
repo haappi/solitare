@@ -48,14 +48,14 @@ class Card(arcade.Sprite):
     def get_asset_location(self) -> str:
         """
         Returns the path of the card's asset
-        :return: [:class:`str`]
+        :return: :class:`str`
         """
         return self.__asset_location
 
     def __repr__(self) -> str:
         """
         Represents the card as its name
-        :return:
+        :return: [:class:`str`]
         """
         return f"<{self.__name}>"
 
