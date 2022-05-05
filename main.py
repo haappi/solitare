@@ -38,17 +38,17 @@ x = cards that are face down
 
 # 500 x 726
 
-from archived import Cards as CardObjects
+# from archived import Cards as CardObjects
 
 card_list = []
 
 
-def init():
-    global card_list
-    card_list = CardObjects.init_cards()
-    print(card_list)
+# def init():
+#     global card_list
+#     card_list = CardObjects.init_cards()
+#     print(card_list)
 
 
-init()
+# init()
 
 # https://reloadium.io/

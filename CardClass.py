@@ -68,6 +68,9 @@ class Card(arcade.Sprite):
         self.__is_face_up = True
 
     @property
-    def is_face_down(self):
-        """ Is this card face down? """
+    def is_face_down(self) -> bool:
+        """
+        Returns whether the card is face-down
+        :return: :class:`bool`
+        """
         return not self.__is_face_up
