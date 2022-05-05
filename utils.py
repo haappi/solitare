@@ -59,13 +59,19 @@ class Card(arcade.Sprite):
         """
         return f"<{self.__name}>"
 
-    def face_down(self):
-        """ Turn card face-down """
+    def __face_down(self) -> None:
+        """
+        Turn the card face-down
+        :return: :class:`None`
+        """
         self.texture = arcade.load_texture("../assets/cards/back.png")
         self.__is_face_up = False
 
-    def face_up(self):
-        """ Turn card face-up """
+    def __face_up(self) -> None:
+        """
+        Turn the card face-up
+        :return: :class:`None`
+        """
         self.texture = arcade.load_texture(self.__asset_location)
         self.__is_face_up = True
 
