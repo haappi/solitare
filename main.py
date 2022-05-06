@@ -36,6 +36,12 @@ x = cards that are face down
 # Make sure that the game has some sort of creative twist. Nothing that can be *easily* found on the internet.
 """
 
+"""
+go through tthe entire code
+show all the aspects of the code within the program without showing the code
+
+"""
+
 # 500 x 726
 
 # from archived import Cards as CardObjects
