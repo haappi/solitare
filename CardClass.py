@@ -4,7 +4,7 @@ import arcade
 
 
 class Card(arcade.Sprite):
-    def __init__(self, suite: str, number: typing.Union[str, int]):
+    def __init__(self, suite: str, number: typing.Union[str, int], scale: typing.Union[int, float] = 1,):
         self.__suite: str = suite.title()  # ace / spade / heart / diamond
         self.__number: typing.Union[
             str, int
@@ -13,7 +13,7 @@ class Card(arcade.Sprite):
         self.__asset_location: typing.Final[
             str
         ] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
-        super().__init__(self.__asset_location, scale=0.5, hit_box_algorithm="None")
+        super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None")
         self.__is_face_up = False
 
     def get_suite(self) -> str:
