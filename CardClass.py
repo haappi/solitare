@@ -51,6 +51,18 @@ class Card(arcade.Sprite):
         """
         return f"<{self.__name}>"
 
+    def set_card_face_down(self) -> None:
+        """
+        Sets the card face-down
+        """
+        self.__face_down()
+
+    def set_card_face_up(self) -> None:
+        """
+        Sets the card face-up
+        """
+        self.__face_up()
+
     def __face_down(self) -> None:
         """
         Turn the card face-down
