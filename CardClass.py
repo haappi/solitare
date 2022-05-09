@@ -12,9 +12,11 @@ class Card(arcade.Sprite):
         self.__name: typing.Final[str] = f"{self.__number} of {self.__suite}"
         self.__asset_location: typing.Final[
             str
-        ] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
+        ] = f"./assets/cards/{self.__number}_of_{self.__suite.lower()}.png"
         super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None")
         self.__is_face_up = False
+        self.internal_number: typing.Final = int(self.__number.lower().replace("ace", "1").replace("jack", "11")
+                                                 .replace("queen", "12").replace("king", "13"))
 
     def get_suite(self) -> str:
         """
