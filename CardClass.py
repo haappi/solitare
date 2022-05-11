@@ -4,7 +4,7 @@ import arcade
 
 
 class Card(arcade.Sprite):
-    def __init__(self, suite: str, number: typing.Union[str, int]):
+    def __init__(self, suite: str, number: typing.Union[str, int], scale: float = 0.5):
         self.__suite: str = suite.title()  # ace / spade / heart / diamond
         self.__number: typing.Union[
             str, int
@@ -15,10 +15,11 @@ class Card(arcade.Sprite):
         except KeyError:
             raise RuntimeError(f"{self.__number} is not a valid card number")
         self.__name: typing.Final[str] = f"{self.__number} of {self.__suite}"
-        self.__asset_location: typing.Final[
-            str
-        ] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
-        super().__init__(self.__asset_location, scale=0.5, hit_box_algorithm="None")
+        # self.__asset_location: typing.Final[
+        #     str
+        # ] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
+        self.__asset_location: typing.Final[str] = f":resources:images/cards/card{self.__suite}{self.__number}.png"
+        super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None")
         self.__color: typing.Final[str] = 'black' if self.__suite.lower() in ('spade', 'club') else 'red'
         self.__is_face_up = False
 
