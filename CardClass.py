@@ -10,8 +10,9 @@ class Card(arcade.Sprite):
             str, int
         ] = number  # 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 / jack / queen / king
         try:
-            self.__internal_number: typing.Final[int] = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10,
-                                                         "jack": 11, "queen": 12, "king": 13}[self.__number]
+            self.__internal_number: typing.Final[int] = {1: 1, "A": 1, 2: 2, 3: 3, 4: 4, 5: 5,
+                                                         6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "jack": 11,
+                                                         "queen": 12, "king": 13}[self.__number]
         except KeyError:
             raise RuntimeError(f"{self.__number} is not a valid card number")
         self.__name: typing.Final[str] = f"{self.__number} of {self.__suite}"
@@ -73,6 +74,13 @@ class Card(arcade.Sprite):
         """
         self.texture = arcade.load_texture(self.__asset_location)
         self.__is_face_up = True
+
+    def face_up(self) -> None:
+        """
+        Turn the card face-up
+        :return: :class:`None`
+        """
+        self.__face_up()
 
     @property
     def is_face_down(self) -> bool:

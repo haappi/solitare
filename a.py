@@ -7,6 +7,8 @@ import random
 import arcade
 
 # Screen title and size
+from CardClass import Card
+
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 SCREEN_TITLE = "Drag and Drop Cards"
@@ -68,28 +70,6 @@ TOP_PILE_1 = 9
 TOP_PILE_2 = 10
 TOP_PILE_3 = 11
 TOP_PILE_4 = 12
-
-
-class Card(arcade.Sprite):
-    def __init__(self, suit, value, scale=1):
-        self.suit = suit
-        self.value = value
-
-        self.image_file_name = f":resources:images/cards/card{self.suit}{self.value}.png"
-        self.is_face_up = False
-        super().__init__(FACE_DOWN_IMAGE, scale, hit_box_algorithm="None")
-
-    def face_down(self):
-        self.texture = arcade.load_texture(FACE_DOWN_IMAGE)
-        self.is_face_up = False
-
-    def face_up(self):
-        self.texture = arcade.load_texture(self.image_file_name)
-        self.is_face_up = True
-
-    @property
-    def is_face_down(self):
-        return not self.is_face_up
 
 
 class MyGame(arcade.Window):
@@ -179,6 +159,7 @@ class MyGame(arcade.Window):
     def on_mouse_press(self, x, y, button, key_modifiers):
 
         cards = arcade.get_sprites_at_point((x, y), self.card_list)
+        return
 
         if len(cards) > 0:
 
