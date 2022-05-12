@@ -4,7 +4,8 @@ import arcade
 
 
 class Card(arcade.Sprite):
-    def __init__(self, suite: str, number: typing.Union[str, int], scale: float = 0.5):
+    def __init__(self, suite: str, number: typing.Union[str, int], scale: typing.Union[int, float] = 1):
+
         self.__suite: str = suite.title()  # ace / spade / heart / diamond
         self.__number: typing.Union[
             str, int
@@ -22,7 +23,13 @@ class Card(arcade.Sprite):
         self.__asset_location: typing.Final[str] = f":resources:images/cards/card{self.__suite}{self.__number}.png"
         super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None")
         self.__color: typing.Final[str] = 'black' if self.__suite.lower() in ('spade', 'club') else 'red'
+        # self.__asset_location: typing.Final[
+        #     str
+        # ] = f"./assets/cards/{self.__number}_of_{self.__suite.lower()}.png"
+        super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None")
         self.__is_face_up = False
+        self.internal_number: typing.Final = int(self.__number.lower().replace("ace", "1").replace("jack", "11")
+                                                 .replace("queen", "12").replace("king", "13"))
 
     def get_suite(self) -> str:
         """
@@ -58,6 +65,18 @@ class Card(arcade.Sprite):
         :return: [:class:`str`]
         """
         return f"<{self.__name}>"
+
+    def set_card_face_down(self) -> None:
+        """
+        Sets the card face-down
+        """
+        self.__face_down()
+
+    def set_card_face_up(self) -> None:
+        """
+        Sets the card face-up
+        """
+        self.__face_up()
 
     def __face_down(self) -> None:
         """
