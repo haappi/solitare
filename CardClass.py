@@ -10,26 +10,16 @@ class Card(arcade.Sprite):
         self.__number: typing.Union[
             str, int
         ] = number  # 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10 / jack / queen / king
-        try:
-            self.__internal_number: typing.Final[int] = {1: 1, "A": 1, 2: 2, 3: 3, 4: 4, 5: 5,
-                                                         6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "jack": 11,
-                                                         "queen": 12, "king": 13}[self.__number]
-        except KeyError:
-            raise RuntimeError(f"{self.__number} is not a valid card number")
         self.__name: typing.Final[str] = f"{self.__number} of {self.__suite}"
         # self.__asset_location: typing.Final[
         #     str
         # ] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
         self.__asset_location: typing.Final[str] = f":resources:images/cards/card{self.__suite}{self.__number}.png"
-        super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None")
         self.__color: typing.Final[str] = 'black' if self.__suite.lower() in ('spade', 'club') else 'red'
-        # self.__asset_location: typing.Final[
-        #     str
-        # ] = f"./assets/cards/{self.__number}_of_{self.__suite.lower()}.png"
         super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None")
         self.__is_face_up = False
-        self.internal_number: typing.Final = int(self.__number.lower().replace("ace", "1").replace("jack", "11")
-                                                 .replace("queen", "12").replace("king", "13"))
+        self.__internal_number: typing.Final = int(self.__number.lower().replace("ace", "1").replace("jack", "11")
+                                                   .replace("queen", "12").replace("king", "13"))
 
     def get_suite(self) -> str:
         """
@@ -112,7 +102,7 @@ class Card(arcade.Sprite):
     def can_be_stacked(self, other: 'Card') -> bool:
         """
         Returns whether the card can be stacked on the other card
-        :param other: [:class:`Card`] The other card
+        :param other: Union[:class:`Card`, :class:`None`] The other card
         :return: [:class:`bool`] whether the card can be stacked on the other card
         """
         return (self.__internal_number <= other.__internal_number) and (self.__color != other.__color)
@@ -120,7 +110,7 @@ class Card(arcade.Sprite):
     def can_be_on_foundation(self, preceding: typing.Union[None, 'Card']) -> bool:
         """
         Returns whether the card can be on the foundation
-        :param preceding: [:class:`Card`] the top that is on the foundation
+        :param preceding: Union[:class:`Card`, :class:`None`] the top that is on the foundation
         :return: [:class:`bool`] whether the card can be on the foundation
         """
         if not preceding:
