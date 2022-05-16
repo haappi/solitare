@@ -12,8 +12,8 @@ import arcade
 from CardClass import Card
 from utils.helpers import yeet_card_from_pile, move_card_to_top
 
-SCREEN_WIDTH = 1920
-SCREEN_HEIGHT = 1080
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
 SCREEN_TITLE = "Drag and Drop Cards"
 
 # Constants for sizing
@@ -98,13 +98,10 @@ class MyGame(arcade.Window):
 
         self.pile_mat_list: arcade.SpriteList = arcade.SpriteList()
 
-        pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.DARK_OLIVE_GREEN)
-        pile.position = START_X, BOTTOM_Y
-        self.pile_mat_list.append(pile)
-
-        pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.DARK_OLIVE_GREEN)
-        pile.position = START_X + X_SPACING, BOTTOM_Y
-        self.pile_mat_list.append(pile)
+        for i in range(2):
+            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.DARK_OLIVE_GREEN)
+            pile.position = START_X + (X_SPACING * i), BOTTOM_Y
+            self.pile_mat_list.append(pile)
 
         for i in range(7):
             pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.PERU)
