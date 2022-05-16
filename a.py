@@ -1,6 +1,8 @@
 """
 Solitaire clone.
 """
+import pprint
+import typing
 from typing import Optional
 
 import random
@@ -8,6 +10,7 @@ import arcade
 
 # Screen title and size
 from CardClass import Card
+from utils.helpers import yeet_card_from_pile, move_card_to_top
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -104,7 +107,7 @@ class MyGame(arcade.Window):
         self.pile_mat_list.append(pile)
 
         for i in range(7):
-            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.DARK_OLIVE_GREEN)
+            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.PERU)
             pile.position = START_X + i * X_SPACING, MIDDLE_Y
             self.pile_mat_list.append(pile)
 
@@ -135,6 +138,12 @@ class MyGame(arcade.Window):
                 card = self.piles[BOTTOM_FACE_DOWN_PILE].pop()
                 self.piles[pile_no].append(card)
                 card.position = self.pile_mat_list[pile_no].position
+                # print(f"We're on the {pile_no} pile of {len(self.piles[pile_no])} cards. Located at {card.position}")
+                pos = list(card.position)
+                pos[1] -= CARD_VERTICAL_OFFSET * j
+                card.position = tuple(pos)
+                card.face_down()
+                # print(card.position)
                 self.pull_to_top(card)
 
         for i in range(PLAY_PILE_1, PLAY_PILE_7 + 1):
@@ -147,10 +156,9 @@ class MyGame(arcade.Window):
 
         self.card_list.draw()
 
-    def pull_to_top(self, card: arcade.Sprite):
+    def pull_to_top(self, card):
 
-        self.card_list.remove(card)
-        self.card_list.append(card)
+        self.card_list = move_card_to_top(self.card_list, card)
 
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.R:
@@ -159,7 +167,7 @@ class MyGame(arcade.Window):
     def on_mouse_press(self, x, y, button, key_modifiers):
 
         cards = arcade.get_sprites_at_point((x, y), self.card_list)
-        return
+        # return
 
         if len(cards) > 0:
 
@@ -180,7 +188,8 @@ class MyGame(arcade.Window):
                     self.pull_to_top(card)
 
             elif primary_card.is_face_down:
-                primary_card.face_up()
+                if self.piles[pile_index][-1] == primary_card:
+                    primary_card.face_up()
             else:
                 self.held_cards = [primary_card]
                 self.held_cards_original_position = [self.held_cards[0].position]
@@ -210,13 +219,21 @@ class MyGame(arcade.Window):
                         card.position = self.pile_mat_list[BOTTOM_FACE_DOWN_PILE].position
 
     def remove_card_from_pile(self, card):
-        for pile in self.piles:
-            if card in pile:
-                pile.remove(card)
-                break
+        yeet_card_from_pile(self.piles, card)
 
     def get_pile_for_card(self, card):
+        """
+        Gets the pile a card is in.
+
+        :param card: The card to search for.
+        :return: The pile the card is in.
+        """
+        # https://realpython.com/python-enumerate/
+        # Basically how enumerate works.
+        # It takes a list and returns a list of tuples. Each tuple contains the index and the value from the list.
         for index, pile in enumerate(self.piles):
+            # index is the index of the pile. pile is the pile itself. It's split up like this because it's a tuple,
+            # and python supports unpacking. (Splitting into multiple variables)
             if card in pile:
                 return index
 
@@ -233,36 +250,57 @@ class MyGame(arcade.Window):
         pile, distance = arcade.get_closest_sprite(self.held_cards[0], self.pile_mat_list)
         reset_position = True
 
-        if arcade.check_for_collision(self.held_cards[0], pile):
-
+        # if arcade.check_for_collision(self.held_cards[0], pile):
+        if True:
             pile_index = self.pile_mat_list.index(pile)
+            # print(self.piles[pile_index][-1])
+            # print(self.held_cards[-1])
+            # print(self.held_cards[0].can_be_stacked(self.piles[pile_index][-1]))
 
             if pile_index == self.get_pile_for_card(self.held_cards[0]):
                 pass
-
-            elif PLAY_PILE_1 <= pile_index <= PLAY_PILE_7:
+            elif pile_index in range(PLAY_PILE_1, PLAY_PILE_7 + 1):
                 if len(self.piles[pile_index]) > 0:
-                    top_card = self.piles[pile_index][-1]
-                    for i, dropped_card in enumerate(self.held_cards):
-                        dropped_card.position = top_card.center_x, \
-                                                top_card.center_y - CARD_VERTICAL_OFFSET * (i + 1)
+                    if not (self.held_cards[0].can_be_stacked(self.piles[pile_index][-1])):
+                        # print("cant stack")
+                        # print(self.piles[pile_index][-1])
+                        pass
+                    else:
+                        pass
+                        # print("can stack")
+                    top_card: Card = self.piles[pile_index][-1]
+                    if not top_card.can_be_stacked(top_card):
+                        pass
+                    else:
+                        for i, dropped_card in enumerate(self.held_cards):
+                            dropped_card.position = top_card.center_x, \
+                                                    top_card.center_y - CARD_VERTICAL_OFFSET * (i + 1)
                 else:
                     for i, dropped_card in enumerate(self.held_cards):
                         dropped_card.position = pile.center_x, \
                                                 pile.center_y - CARD_VERTICAL_OFFSET * i
 
                 for card in self.held_cards:
+                    if not card.can_be_stacked:
+                        print("rip")
+                    # else:
                     self.move_card_to_new_pile(card, pile_index)
 
                 reset_position = False
 
-            elif TOP_PILE_1 <= pile_index <= TOP_PILE_4 and len(self.held_cards) == 1:
-                self.held_cards[0].position = pile.position
-                for card in self.held_cards:
-                    self.move_card_to_new_pile(card, pile_index)
-
-                reset_position = False
-
+            elif TOP_PILE_1 <= pile_index <= TOP_PILE_4:
+                # elif TOP_PILE_1 <= pile_index <= TOP_PILE_4 and len(self.held_cards) == 1:
+                if self.held_cards[0].can_be_on_foundation(self.card_list[pile_index] if not [] else None):
+                    self.held_cards[0].position = pile.position
+                    for card in self.held_cards:
+                        self.move_card_to_new_pile(card, pile_index)
+                    reset_position = False
+                else:
+                    reset_position = True
+            else:
+                print("How'd we get here?")
+        else:
+            print("they aint close")
         if reset_position:
             for pile_index, card in enumerate(self.held_cards):
                 card.position = self.held_cards_original_position[pile_index]
@@ -271,7 +309,6 @@ class MyGame(arcade.Window):
 
     def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
         """ User moves mouse """
-
         for card in self.held_cards:
             card.center_x += dx
             card.center_y += dy

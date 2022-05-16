@@ -18,8 +18,8 @@ class Card(arcade.Sprite):
         self.__color: typing.Final[str] = 'black' if self.__suite.lower() in ('spade', 'club') else 'red'
         super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None")
         self.__is_face_up = False
-        self.__internal_number: typing.Final = int(self.__number.lower().replace("ace", "1").replace("jack", "11")
-                                                   .replace("queen", "12").replace("king", "13"))
+        self.__internal_number: typing.Final = int(self.__number.lower().replace("a", "1").replace("j", "11")
+                                                   .replace("q", "12").replace("k", "13"))
 
     def get_suite(self) -> str:
         """
@@ -60,7 +60,7 @@ class Card(arcade.Sprite):
         """
         Sets the card face-down
         """
-        self.__face_down()
+        self.face_down()
 
     def set_card_face_up(self) -> None:
         """
@@ -68,12 +68,12 @@ class Card(arcade.Sprite):
         """
         self.__face_up()
 
-    def __face_down(self) -> None:
+    def face_down(self) -> None:
         """
         Turn the card face-down
         :return: :class:`None`
         """
-        self.texture = arcade.load_texture("../assets/cards/back.png")
+        self.texture = arcade.load_texture(":resources:images/cards/cardBack_red2.png")
         self.__is_face_up = False
 
     def __face_up(self) -> None:
@@ -91,6 +91,13 @@ class Card(arcade.Sprite):
         """
         self.__face_up()
 
+    def get_internal_number(self) -> int:
+        """
+        Returns the internal number of the card
+        :return: [:class:`int`]
+        """
+        return self.__internal_number
+
     @property
     def is_face_down(self) -> bool:
         """
@@ -105,7 +112,11 @@ class Card(arcade.Sprite):
         :param other: Union[:class:`Card`, :class:`None`] The other card
         :return: [:class:`bool`] whether the card can be stacked on the other card
         """
-        return (self.__internal_number <= other.__internal_number) and (self.__color != other.__color)
+        print(other)
+        print(self)
+        # print((not other.is_face_down) or ((self.get_internal_number() < other.get_internal_number()) and (self.__color != other.__color)))
+        return (not other.is_face_down) or ((self.get_internal_number() < other.get_internal_number()) and (self.__color != other.__color))
+        # return (self.__internal_number <= other.__internal_number) and (self.__color != other.__color) or (other is None)
 
     def can_be_on_foundation(self, preceding: typing.Union[None, 'Card']) -> bool:
         """
@@ -113,6 +124,7 @@ class Card(arcade.Sprite):
         :param preceding: Union[:class:`Card`, :class:`None`] the top that is on the foundation
         :return: [:class:`bool`] whether the card can be on the foundation
         """
+        print(preceding)
         if not preceding:
             return True
         return (self.__internal_number == preceding.__internal_number + 1) \

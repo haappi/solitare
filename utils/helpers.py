@@ -1,6 +1,7 @@
 import typing
 
 import arcade
+from arcade import SpriteList
 
 from CardClass import Card
 
@@ -19,20 +20,16 @@ def yeet_card_from_pile(piles: typing.List, card: Card) -> typing.List:
             return pile  # Return the pile with the card removed
 
 
-def stalk_pile_for_card(piles: typing.List, card: Card) -> typing.Union[int, None]:
-    """
-    Gets the pile a card is in.
 
-    :param piles: The pile to search.
-    :param card: The card to search for.
-    :return: The pile the card is in.
+
+def move_card_to_top(piles: arcade.SpriteList, card: Card) -> SpriteList:
     """
-    # https://realpython.com/python-enumerate/
-    # Basically how enumerate works.
-    # It takes a list and returns a list of tuples. Each tuple contains the index and the value from the list.
-    for index, pile in enumerate(piles):
-        # index is the index of the pile. pile is the pile itself. It's split up like this because it's a tuple,
-        # and python supports unpacking. (Splitting into multiple variables)
-        if card in pile:
-            return index
-    return None
+    Moves a card to the top of a pile.
+
+    :param piles: The pile to move the card to.
+    :param card: The card to move.
+    :return: The pile with the card at the end of the pile.
+    """
+    piles.remove(card)
+    piles.append(card)
+    return piles
