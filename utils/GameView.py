@@ -52,24 +52,36 @@ class Solitaire(arcade.Window):
         self.score = 0
         self.set_mouse_visible(False)
 
-        self.card_list: typing.Optional[arcade.SpriteList, list] = []
-        self.held_cards = []
-        self.piles = []
-        self.pile_list: arcade.SpriteList = arcade.SpriteList()
+        self.card_list: typing.Optional[arcade.SpriteList, list] = []  # List of cards
+        self.held_cards = []  # Currently held cards
+        self.piles = []  # Piles of cards
+        self.pile_list: arcade.SpriteList = arcade.SpriteList()  # List of all piles
+        self.held_cards_pos = []  # Positions of held cards
 
         self.background = None
         arcade.set_background_color((40, 192, 198))
 
+    def on_draw(self):
+        self.clear()
+        self.pile_list.draw()
+        self.card_list.draw()
 
     def setup(self) -> None:
         """
         Set up the game
         :return :class:`None`
         """
-        self.card_list: typing.Optional[arcade.SpriteList, list] = []
+        self.card_list: typing.Union[arcade.SpriteList, list] = arcade.SpriteList()
         self.held_cards = []
+        self.held_cards_pos = []
         self.pile_list: arcade.SpriteList = arcade.SpriteList()
         self.card_list: arcade.SpriteList = arcade.SpriteList()
+
+        for i in range(7):
+            # Middle playing piles
+            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000"))
+            pile.position = START_X + (i * X_SPACING), MIDDLE_Y
+            self.pile_list.append(pile)
 
         for i in range(4):
             # Bottom row with extra cards
@@ -77,16 +89,10 @@ class Solitaire(arcade.Window):
             pile.position = START_X + (X_SPACING * i), BOTTOM_Y
             self.pile_list.append(pile)
 
-        for i in range(7):
-            # Middle playing piles
-            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000"))
-            pile.position = START_X + i * X_SPACING, MIDDLE_Y
-            self.pile_list.append(pile)
-
         for i in range(4):
             # Top foundation piles
             pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000"))
-            pile.position = START_X + i * X_SPACING, TOP_Y
+            pile.position = START_X + (i * X_SPACING), TOP_Y
             self.pile_list.append(pile)
 
         for suit in _CARD_SUITES:
@@ -95,20 +101,24 @@ class Solitaire(arcade.Window):
                 card.position = START_X, BOTTOM_Y
                 self.card_list.append(card)
 
-        self.piles = [[] for _ in range(15)]  # For 13 elems, set to empty list.
+        self.piles = [[] for _ in range(PILE_COUNT)]  # For 13 elems, set to empty list.
 
         for position in range(len(self.card_list)):  # Randomize the cards
-            self.card_list.swap(position, random.randrange(len(self.card_list)))
+            eek = random.randrange(len(self.card_list))
+            self.card_list.swap(position, eek)
             # What random.randrange does is pick a random number between 0 and the length of the list.
             # It's different from random.randint, which picks a random number between two numbers. But this is inclusive.
 
-        self.piles[BOTTOM_FACE_DOWN_PILE] = [i for i in self.card_list]
+        # self.piles[BOTTOM_FACE_DOWN_PILE] = [i for i in self.card_list]
+        for _card in self.card_list:
+            self.piles[BOTTOM_FACE_DOWN_PILE].append(_card)
 
         for piles in range(PLAY_PILE_1, PLAY_PILE_7 + 1):
             for each in range(piles - PLAY_PILE_1 + 1):
-                card: Card = self.piles[BOTTOM_FACE_DOWN_PILE].pop()  # Remove from bottom face down pile and assigns to card
+                card: Card = self.piles[
+                    BOTTOM_FACE_DOWN_PILE].pop()  # Remove from bottom face down pile and assigns to card
                 self.piles[piles].append(card)  # Add to pile
-                new_position = list(self.card_list[piles].position)
+                new_position = list(self.pile_list[piles].position)
                 new_position[1] -= CARD_VERTICAL_OFFSET * each  # Slightly move the card down
                 """
                 Tuples aren't really "changeable", so we need to convert the list to a tuple in order to
@@ -118,19 +128,16 @@ class Solitaire(arcade.Window):
                 position takes a tuple.
                 """
 
-                card.face_down()
                 card.position = tuple(new_position)  # Set the new position
+                card.face_down()
+                # print(card.position)
 
                 self.pull_to_top(card)  # Pull the card to the top of the pile
 
         for i in range(PLAY_PILE_1, PLAY_PILE_7 + 1):
             self.piles[i][-1].face_up()  # Face up the top card of each pile
+            print(self.piles[i][-1].position)
             # -1 is the last element in the list, so we face up the top card
-
-    def on_draw(self):
-        self.clear()
-        self.pile_list.draw()
-        self.card_list.draw()
 
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.R:
@@ -167,8 +174,39 @@ class Solitaire(arcade.Window):
         elif card.is_face_down:
             if self.piles[pile_index][-1] == card:
                 card.face_up()  # If the card is the top card of the pile, then face it up
-        # else:
+        else:
+            self.held_cards = []  # Reset the held cards
+            self.held_cards.append(card)  # Add the card to the held cards
 
+            self.held_cards_pos = [
+                self.held_cards[0].position]  # I want to keep track of the position of the cards in the users's hand
+
+            self.pull_to_top(card)  # Pull the card to the top of the pile
+
+            index_of_card = self.piles[pile_index].index(card)  # Get the index of the card in the pile
+            for i in range(index_of_card + 1, len(self.piles[pile_index])):
+                __card = self.piles[pile_index][i]
+                if __card.is_face_down:
+                    continue
+                self.held_cards.append(__card)
+                self.held_cards_pos.append(__card.position)
+                self.pull_to_top(__card)
+
+    def get_pile_for_card(self, card):
+        """
+        Gets the pile a card is in.
+
+        :param card: The card to search for.
+        :return: The pile the card is in.
+        """
+        # https://realpython.com/python-enumerate/
+        # Basically how enumerate works.
+        # It takes a list and returns a list of tuples. Each tuple contains the index and the value from the list.
+        for index, pile in enumerate(self.piles):
+            # index is the index of the pile. pile is the pile itself. It's split up like this because it's a tuple,
+            # and python supports unpacking. (Splitting into multiple variables)
+            if card in pile:
+                return index
 
     def on_mouse_release(self, x, y, button, modifiers):
         pass
@@ -177,7 +215,9 @@ class Solitaire(arcade.Window):
         pass
 
     def pull_to_top(self, card):
-        self.card_list = move_card_to_top(self.card_list, card)
+        self.card_list.remove(card)
+        self.card_list.append(card)
+        # self.card_list = move_card_to_top(self.card_list, card)
 
 
 def main():
