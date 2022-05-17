@@ -34,6 +34,12 @@ x = cards that are face down
 [] = cards that are face down and are in the extras pile
 
 # Make sure that the game has some sort of creative twist. Nothing that can be *easily* found on the internet.
+
+# todo thing to make so game auto compltes
+-  score function
+-  finishing game sequence
+-  show the ascpets of the code
+-  REWRIRE THE CODE
 """
 
 """
