@@ -4,7 +4,7 @@ import arcade
 
 
 class Card(arcade.Sprite):
-    def __init__(self, suite: str, number: typing.Union[str, int], scale: typing.Union[int, float] = 1):
+    def __init__(self, suite: str, number: typing.Union[str, int], scale: typing.Union[int, float] = 0.6):
 
         self.__suite: str = suite.title()  # ace / spade / heart / diamond
         self.__number: typing.Union[

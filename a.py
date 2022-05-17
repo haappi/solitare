@@ -61,18 +61,20 @@ FACE_DOWN_IMAGE = ":resources:images/cards/cardBack_red2.png"
 # Constants that represent "what pile is what" for the game
 PILE_COUNT = 13
 BOTTOM_FACE_DOWN_PILE = 0
-BOTTOM_FACE_UP_PILE = 1
-PLAY_PILE_1 = 2
-PLAY_PILE_2 = 3
-PLAY_PILE_3 = 4
-PLAY_PILE_4 = 5
-PLAY_PILE_5 = 6
-PLAY_PILE_6 = 7
-PLAY_PILE_7 = 8
-TOP_PILE_1 = 9
-TOP_PILE_2 = 10
-TOP_PILE_3 = 11
-TOP_PILE_4 = 12
+BOTTOM_FACE_UP_PILE_ONE = 1
+BOTTOM_FACE_UP_PILE_TWO = 2
+BOTTOM_FACE_UP_PILE_THREE = 3
+PLAY_PILE_1 = 4
+PLAY_PILE_2 = 5
+PLAY_PILE_3 = 6
+PLAY_PILE_4 = 7
+PLAY_PILE_5 = 8
+PLAY_PILE_6 = 9
+PLAY_PILE_7 = 10
+TOP_PILE_1 = 11
+TOP_PILE_2 = 12
+TOP_PILE_3 = 13
+TOP_PILE_4 = 14
 
 
 class MyGame(arcade.Window):
@@ -81,7 +83,7 @@ class MyGame(arcade.Window):
 
         self.card_list: Optional[arcade.SpriteList] = None
 
-        arcade.set_background_color(arcade.color.AMAZON)
+        arcade.set_background_color((40, 192, 198))
 
         self.held_cards = None
 
@@ -90,26 +92,29 @@ class MyGame(arcade.Window):
         self.pile_mat_list = None
 
         self.piles = None
+        self.background = None
 
     def setup(self):
+        self.background = arcade.load_texture("bg.png")
+
         self.held_cards = []
 
         self.held_cards_original_position = []
 
         self.pile_mat_list: arcade.SpriteList = arcade.SpriteList()
 
-        for i in range(2):
-            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.DARK_OLIVE_GREEN)
+        for i in range(4):
+            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000"))
             pile.position = START_X + (X_SPACING * i), BOTTOM_Y
             self.pile_mat_list.append(pile)
 
         for i in range(7):
-            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.PERU)
+            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000"))
             pile.position = START_X + i * X_SPACING, MIDDLE_Y
             self.pile_mat_list.append(pile)
 
         for i in range(4):
-            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.csscolor.DARK_OLIVE_GREEN)
+            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000"))
             pile.position = START_X + i * X_SPACING, TOP_Y
             self.pile_mat_list.append(pile)
 
@@ -148,7 +153,9 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         self.clear()
-
+        # arcade.draw_lrwh_rectangle_textured(0, 0,
+        #                                     SCREEN_WIDTH, SCREEN_HEIGHT,
+        #                                     self.background)
         self.pile_mat_list.draw()
 
         self.card_list.draw()
@@ -177,11 +184,13 @@ class MyGame(arcade.Window):
                 for i in range(3):
                     if len(self.piles[BOTTOM_FACE_DOWN_PILE]) == 0:
                         break
+                    if len(self.piles[BOTTOM_FACE_UP_PILE_ONE + i]) != 0:
+                        continue  # Don't replace all the cards, only get new ones for those that are blank.
                     card = self.piles[BOTTOM_FACE_DOWN_PILE][-1]
                     card.face_up()
-                    card.position = self.pile_mat_list[BOTTOM_FACE_UP_PILE].position
+                    card.position = self.pile_mat_list[BOTTOM_FACE_UP_PILE_ONE + i].position
                     self.piles[BOTTOM_FACE_DOWN_PILE].remove(card)
-                    self.piles[BOTTOM_FACE_UP_PILE].append(card)
+                    self.piles[BOTTOM_FACE_UP_PILE_ONE + i].append(card)
                     self.pull_to_top(card)
 
             elif primary_card.is_face_down:
