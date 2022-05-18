@@ -83,7 +83,7 @@ HORIZONTAL_MARGIN_PERCENT = 0.10
 BOTTOM_Y = MAT_HEIGHT / 2 + MAT_HEIGHT * VERTICAL_MARGIN_PERCENT
 
 # The X of where to start putting things on the left side
-START_X = (MAT_WIDTH / 2 + MAT_WIDTH * HORIZONTAL_MARGIN_PERCENT)
+START_X = MAT_WIDTH / 2 + MAT_WIDTH * HORIZONTAL_MARGIN_PERCENT
 
 RIGHT_X = (SCREEN_WIDTH - MAT_WIDTH / 2 - MAT_WIDTH * HORIZONTAL_MARGIN_PERCENT) - 50
 
@@ -160,29 +160,38 @@ class Solitaire(arcade.Window):
         #         self.card_list.append(card)
         random.shuffle(CARD_SUITES)
         random.shuffle(CARD_NUMBERS)
-        card_list = [Card(suit, number, (START_X, BOTTOM_Y), CARD_SCALE)
-                     for suit in CARD_SUITES
-                     for number in CARD_NUMBERS]
+        card_list = [
+            Card(suit, number, (START_X, BOTTOM_Y), CARD_SCALE)
+            for suit in CARD_SUITES
+            for number in CARD_NUMBERS
+        ]
         # random.sample shuffles in place, so we need to make a new list for the one liner.
         # BUT- it's slower by 0.00000001 ms so i care.
-        self.card_list.extend(card_list)  # What extend does is add all the elements of the list to the sprite list.
+        self.card_list.extend(
+            card_list
+        )  # What extend does is add all the elements of the list to the sprite list.
         # Like append but all at once. Instead of chained append.
 
-        self.piles[piles['main']] = [card for card in self.card_list]
+        self.piles[piles["main"]] = [card for card in self.card_list]
 
         # We need to fill the piles from left-right, top-bottom.
         # Right having the most
 
-        for pile in range(piles['play_1'], piles['play_7'] + 1):
-            for tall in range(pile + 1 - piles['play_1']):
-                thy_card: Card = self.piles[piles['main']].pop()
+        for pile in range(piles["play_1"], piles["play_7"] + 1):
+            for tall in range(pile + 1 - piles["play_1"]):
+                thy_card: Card = self.piles[piles["main"]].pop()
                 self.piles[pile].append(thy_card)
 
-                thy_card.set_position(self.pile_mat_list[pile].center_x, self.pile_mat_list[pile].center_y)
-                thy_card.set_position(thy_card.center_x, (thy_card.center_y - (tall * CARD_VERTICAL_OFFSET)))
+                thy_card.set_position(
+                    self.pile_mat_list[pile].center_x, self.pile_mat_list[pile].center_y
+                )
+                thy_card.set_position(
+                    thy_card.center_x,
+                    (thy_card.center_y - (tall * CARD_VERTICAL_OFFSET)),
+                )
                 self.pull_to_top(thy_card)
 
-        for i in range(piles['play_1'], piles['play_7'] + 1):
+        for i in range(piles["play_1"], piles["play_7"] + 1):
             self.piles[i][-1].face_up()
 
     def on_draw(self):
@@ -274,28 +283,30 @@ class Solitaire(arcade.Window):
                 mat = mats[0]
                 mat_index = self.pile_mat_list.index(mat)
 
-                if mat_index == piles['main'] and len(self.piles[piles['main']]) == 0:
-                    temp_list = self.piles[piles['face_up_1']].copy()
+                if mat_index == piles["main"] and len(self.piles[piles["main"]]) == 0:
+                    temp_list = self.piles[piles["face_up_1"]].copy()
                     for card in reversed(temp_list):
                         card.face_down()
-                        self.piles[piles['face_up_1']].remove(card)
-                        self.piles[piles['main']].append(card)
-                        card.position = self.pile_mat_list[piles['main']].position
+                        self.piles[piles["face_up_1"]].remove(card)
+                        self.piles[piles["main"]].append(card)
+                        card.position = self.pile_mat_list[piles["main"]].position
 
         index = self.__get_pile_for_card(first_boi)
 
-        if index == piles['main']:
+        if index == piles["main"]:
             for i in range(3):
-                if len(self.piles[piles['main']]) == 0:
+                if len(self.piles[piles["main"]]) == 0:
                     break
-                if len(self.piles[piles['face_up_1'] + i]) != 0:
+                if len(self.piles[piles["face_up_1"] + i]) != 0:
                     continue  # Skip that pile.
-                card = self.piles[piles['main']].pop(-1)
-                self.piles[piles['face_up_1'] + i].append(card)
+                card = self.piles[piles["main"]].pop(-1)
+                self.piles[piles["face_up_1"] + i].append(card)
                 self.pull_to_top(card)
                 card.set_card_face_up()
-                card.set_position(self.pile_mat_list[piles['face_up_1'] + i].center_x,
-                                  self.pile_mat_list[piles['face_up_1'] + i].center_y)
+                card.set_position(
+                    self.pile_mat_list[piles["face_up_1"] + i].center_x,
+                    self.pile_mat_list[piles["face_up_1"] + i].center_y,
+                )
                 return
         elif first_boi.is_face_down:
             if self.__get_pile_for_card(first_boi) == index:
@@ -316,8 +327,7 @@ class Solitaire(arcade.Window):
                 self.pull_to_top(card)
                 self.held_cards_original_position.append(card.position)
 
-    def on_mouse_release(self, x: float, y: float, button: int,
-                         modifiers: int):
+    def on_mouse_release(self, x: float, y: float, button: int, modifiers: int):
         """
         I need more docstrings?????????????
         :param x:
@@ -333,17 +343,21 @@ class Solitaire(arcade.Window):
         # Get the closet sprite at the mouse position.
         # arcade.get_closest_sprite returns a tuple with two objects.
         # The first is the sprite, the second is the distance.
-        card, distance = arcade.get_closest_sprite(self.held_cards[0], self.pile_mat_list)
+        card, distance = arcade.get_closest_sprite(
+            self.held_cards[0], self.pile_mat_list
+        )
 
         can_move = False
 
         index = self.pile_mat_list.index(card)
         if index == self.__get_pile_for_card(self.held_cards[0]):
             for card in self.held_cards:
-                card.position = self.held_cards_original_position[self.held_cards.index(card)]
+                card.position = self.held_cards_original_position[
+                    self.held_cards.index(card)
+                ]
                 self.held_cards.remove(card)
             self.held_cards = []
-        elif index in range(piles['play_1'], piles['play_7'] + 1):  # MAIN PILES.
+        elif index in range(piles["play_1"], piles["play_7"] + 1):  # MAIN PILES.
             # Construct a range list to see if it's in-range
             if self.piles[index]:
                 top_most: Card = self.piles[index][-1]
@@ -351,7 +365,10 @@ class Solitaire(arcade.Window):
                     # print("Can stack")
                     can_move = True
                     for _index, _card in enumerate(self.held_cards):
-                        _card.set_position(top_most.center_x, top_most.center_y - CARD_VERTICAL_OFFSET * (_index + 1))
+                        _card.set_position(
+                            top_most.center_x,
+                            top_most.center_y - CARD_VERTICAL_OFFSET * (_index + 1),
+                        )
                 else:
                     can_move = False
                     # print("LLLL")
@@ -359,13 +376,21 @@ class Solitaire(arcade.Window):
                 if self.held_cards[0].get_number() == "K":
                     can_move = True
                     bap: Card = self.held_cards.pop(0)
-                    bap.set_position(self.pile_mat_list[index].center_x, self.pile_mat_list[index].center_y)
+                    bap.set_position(
+                        self.pile_mat_list[index].center_x,
+                        self.pile_mat_list[index].center_y,
+                    )
                     print(bap)
                     for _index, _card in enumerate(self.held_cards):
-                        _card.set_position(bap.center_x, bap.center_y - CARD_VERTICAL_OFFSET * (_index + 1))
+                        _card.set_position(
+                            bap.center_x,
+                            bap.center_y - CARD_VERTICAL_OFFSET * (_index + 1),
+                        )
                     # print("Is a king")
 
-        elif index in range(piles['foundation_1'], piles['foundation_4'] + 1):  # FOUNDATION.
+        elif index in range(
+            piles["foundation_1"], piles["foundation_4"] + 1
+        ):  # FOUNDATION.
             if self.piles[index]:
                 if self.held_cards[0].can_be_on_foundation(self.piles[index][-1]):
                     can_move = True
@@ -377,7 +402,10 @@ class Solitaire(arcade.Window):
                 if self.held_cards[-1].get_number() == "A":
                     can_move = True
                     for _index, _card in enumerate(reversed(self.held_cards)):
-                        _card.set_position(self.pile_mat_list[index].center_x, self.pile_mat_list[index].center_y)
+                        _card.set_position(
+                            self.pile_mat_list[index].center_x,
+                            self.pile_mat_list[index].center_y,
+                        )
                         self.pull_to_top(_card)
             # if len(self.piles[index]) == 0:
             #     if self.held_cards[-1].get_suite() == "A":
@@ -390,7 +418,9 @@ class Solitaire(arcade.Window):
 
         if not can_move:
             for card in self.held_cards:
-                card.position = self.held_cards_original_position[self.held_cards.index(card)]
+                card.position = self.held_cards_original_position[
+                    self.held_cards.index(card)
+                ]
                 self.held_cards.remove(card)
         for card in self.held_cards:
             self.__move_card(card, index)
@@ -404,8 +434,12 @@ class Solitaire(arcade.Window):
         #     print("shown")
 
     def check_win(self):
-        if len(self.piles[piles['foundation_1']]) == 13 and len(self.piles[piles['foundation_2']]) == 13 and \
-                len(self.piles[piles['foundation_3']]) == 13 and len(self.piles[piles['foundation_4']]) == 13:
+        if (
+            len(self.piles[piles["foundation_1"]]) == 13
+            and len(self.piles[piles["foundation_2"]]) == 13
+            and len(self.piles[piles["foundation_3"]]) == 13
+            and len(self.piles[piles["foundation_4"]]) == 13
+        ):
             return True
         return False
 
@@ -413,22 +447,43 @@ class Solitaire(arcade.Window):
         self.partial_setup()
 
         CARD_SUITES = ["Clubs", "Hearts", "Spades", "Diamonds"]
-        CARD_NUMBERS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+        CARD_NUMBERS = [
+            "A",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "J",
+            "Q",
+            "K",
+        ]
 
-        card_list = [Card(suit, number, (START_X, BOTTOM_Y), CARD_SCALE)
-                     for suit in CARD_SUITES
-                     for number in CARD_NUMBERS]
+        card_list = [
+            Card(suit, number, (START_X, BOTTOM_Y), CARD_SCALE)
+            for suit in CARD_SUITES
+            for number in CARD_NUMBERS
+        ]
 
         self.card_list.extend(card_list)
-        self.piles[piles['main']] = [card for card in self.card_list]
+        self.piles[piles["main"]] = [card for card in self.card_list]
 
         for i in range(4):
             for x in range(13):
-                a_card: Card = self.piles[piles['main']].pop()
+                a_card: Card = self.piles[piles["main"]].pop()
                 a_card.face_up()
                 self.piles[i + 4].append(a_card)
-                a_card.set_position(self.pile_mat_list[i + 4].center_x, self.pile_mat_list[i + 4].center_y)
-                a_card.set_position(a_card.center_x, (a_card.center_y - (x * CARD_VERTICAL_OFFSET)))
+                a_card.set_position(
+                    self.pile_mat_list[i + 4].center_x,
+                    self.pile_mat_list[i + 4].center_y,
+                )
+                a_card.set_position(
+                    a_card.center_x, (a_card.center_y - (x * CARD_VERTICAL_OFFSET))
+                )
                 self.pull_to_top(a_card)
 
     def partial_setup(self):
@@ -440,20 +495,26 @@ class Solitaire(arcade.Window):
         self.held_cards = []
         self.pile_mat_list = arcade.SpriteList()
         self.card_list = arcade.SpriteList()
-        self.piles = [[] for _ in range(piles['count'])]
+        self.piles = [[] for _ in range(piles["count"])]
 
         for i in range(4):
-            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000"))
+            pile = arcade.SpriteSolidColor(
+                MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000")
+            )
             pile.position = START_X + (X_SPACING * i), BOTTOM_Y
             self.pile_mat_list.append(pile)
 
         for i in range(7):
-            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000"))
+            pile = arcade.SpriteSolidColor(
+                MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000")
+            )
             pile.position = START_X + i * X_SPACING, MIDDLE_Y
             self.pile_mat_list.append(pile)
 
         for i in range(4):
-            pile = arcade.SpriteSolidColor(MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000"))
+            pile = arcade.SpriteSolidColor(
+                MAT_WIDTH, MAT_HEIGHT, arcade.color_from_hex_string("#7F000000")
+            )
             pile.position = RIGHT_X, TOP_Y - (i * X_SPACING * 1.5)
             self.pile_mat_list.append(pile)
 

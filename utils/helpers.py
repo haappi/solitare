@@ -20,8 +20,6 @@ def yeet_card_from_pile(piles: typing.List, card: Card) -> typing.List:
             return pile  # Return the pile with the card removed
 
 
-
-
 def move_card_to_top(piles: arcade.SpriteList, card: Card) -> SpriteList:
     """
     Moves a card to the top of a pile.
