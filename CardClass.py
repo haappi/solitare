@@ -4,7 +4,8 @@ import arcade
 
 
 class Card(arcade.Sprite):
-    def __init__(self, suite: str, number: typing.Union[str, int], scale: typing.Union[int, float] = 0.6):
+    def __init__(self, suite: str, number: typing.Union[str, int], starting_pos: typing.Tuple[float, float],
+                 scale: typing.Union[int, float] = 0.6):
 
         self.__suite: str = suite.title()  # ace / spade / heart / diamond
         self.__number: typing.Union[
@@ -15,11 +16,13 @@ class Card(arcade.Sprite):
         #     str
         # ] = f"../assets/cards/{self.__number}_of_{self.__suite.lower()}s.png"
         self.__asset_location: typing.Final[str] = f":resources:images/cards/card{self.__suite}{self.__number}.png"
-        self.__color: typing.Final[str] = 'black' if self.__suite.lower() in ('spade', 'club') else 'red'
-        super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None")
+        self.__color: typing.Final[str] = 'black' if self.__suite.lower() in ('spades', 'clubs') else 'red'
+        super().__init__(self.__asset_location, scale=scale, hit_box_algorithm="None",
+                         center_x=starting_pos[0], center_y=starting_pos[1])
         self.__is_face_up = False
-        self.__internal_number: typing.Final = int(self.__number.lower().replace("a", "1").replace("j", "11")
+        self.__internal_number: typing.Final = int(str(self.__number).lower().replace("a", "1").replace("j", "11")
                                                    .replace("q", "12").replace("k", "13"))
+        self.set_card_face_down()  # default state
 
     def get_suite(self) -> str:
         """
@@ -99,6 +102,14 @@ class Card(arcade.Sprite):
         return self.__internal_number
 
     @property
+    def get_color(self) -> str:
+        """
+        Returns the color of the card
+        :return: [:class:`str`]
+        """
+        return self.__color
+
+    @property
     def is_face_down(self) -> bool:
         """
         Returns whether the card is face-down
@@ -112,11 +123,33 @@ class Card(arcade.Sprite):
         :param other: Union[:class:`Card`, :class:`None`] The other card
         :return: [:class:`bool`] whether the card can be stacked on the other card
         """
-        print(other)
-        print(self)
-        # print((not other.is_face_down) or ((self.get_internal_number() < other.get_internal_number()) and (self.__color != other.__color)))
-        return (not other.is_face_down) or ((self.get_internal_number() < other.get_internal_number()) and (self.__color != other.__color))
-        # return (self.__internal_number <= other.__internal_number) and (self.__color != other.__color) or (other is None)
+        if other.is_face_down:
+            return False
+
+        return (other.get_internal_number() < self.get_internal_number()) and (other.__color != self.__color)
+
+    @staticmethod
+    def can_be_stacked_ugh(card1: 'Card', card2: 'Card') -> bool:
+        """
+        Returns whether one card can be stacked on the other card
+        :param card1: The other card to check against
+        :param card2: The card the user selected
+        :return: A boolean indicating whether the card can be stacked on the other card
+        """
+        if card1.is_face_down:
+            # print("Failed face check")
+            return False
+        if card2.get_internal_number() != card1.get_internal_number() - 1:
+            # print("Failed number check")
+            # print(f"{card2}'s number is {card2.get_internal_number()}. {card1}'s number is {card1.get_internal_number() - 1}")
+            return False
+        if card2.__color == card1.__color:
+            # print(f"{card2} is {card2.__color}. {card1} is {card1.__color}")
+            # print("Failed color check")
+            return False
+
+        return True
+        # return (card2.get_internal_number() < card1.get_internal_number()) and (card1.__color != card2.__color)
 
     def can_be_on_foundation(self, preceding: typing.Union[None, 'Card']) -> bool:
         """
